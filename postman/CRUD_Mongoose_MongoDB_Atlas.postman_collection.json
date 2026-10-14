@@ -1,0 +1,151 @@
+{
+  "info": {
+    "name": "CRUD Mongoose MongoDB Atlas",
+    "description": "Bộ request kiểm thử GET, POST, PATCH và DELETE cho bài thực hành. Chạy POST trước PATCH và DELETE để lưu foodId.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. GET - Read all foods",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/foods",
+        "description": "Lấy toàn bộ document trong collection foods."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Response is an array', function () {",
+              "  pm.expect(pm.response.json()).to.be.an('array');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. POST - Create a food",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"cotton candy\",\n  \"calories\": 100\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}/food",
+        "description": "Tạo food và tự lưu _id vào collection variable foodId để dùng ở PATCH/DELETE."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 201', function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "const data = pm.response.json();",
+              "pm.test('Created food has an id', function () {",
+              "  pm.expect(data._id).to.be.a('string');",
+              "});",
+              "if (data._id) {",
+              "  pm.collectionVariables.set('foodId', data._id);",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. PATCH - Update food calories",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"calories\": 999\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}/food/{{foodId}}",
+        "description": "Cập nhật calories thành 999. Hãy chạy request POST trước để có foodId."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Calories were updated', function () {",
+              "  pm.expect(pm.response.json().calories).to.eql(999);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. DELETE - Delete food",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/food/{{foodId}}",
+        "description": "Xóa document đã tạo. Hãy chạy request POST trước."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Delete confirmation is returned', function () {",
+              "  pm.expect(pm.response.json().message).to.include('deleted');",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "foodId",
+      "value": ""
+    }
+  ]
+}
