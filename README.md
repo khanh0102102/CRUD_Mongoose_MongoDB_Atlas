@@ -53,14 +53,19 @@ Ví dụ body khi tạo mới:
 
 Các endpoint trả về JSON. API có kiểm tra dữ liệu đầu vào, ID không hợp lệ, document không tồn tại và lỗi server.
 
-## Kiểm thử gợi ý trong Postman
+## Kiểm thử bằng Postman
 
-1. Gửi `GET http://localhost:3000/foods` để xem danh sách.
-2. Gửi `POST http://localhost:3000/food` với body dạng raw JSON như ví dụ phía trên; ghi lại trường `_id` trong response.
-3. Gửi `PATCH http://localhost:3000/food/<id>` với `{"calories":999}`.
-4. Gửi lại GET để xác nhận dữ liệu được cập nhật.
-5. Gửi `DELETE http://localhost:3000/food/<id>`.
-6. Gửi lại GET để xác nhận document đã bị xóa.
+Có sẵn collection tại `postman/CRUD_Mongoose_MongoDB_Atlas.postman_collection.json`.
+
+1. Mở Postman và chọn **Import**.
+2. Chọn file collection nói trên.
+3. Chạy request **GET - Read all foods** để xem danh sách hiện có.
+4. Chạy **POST - Create a food**. Request tự lưu `_id` của document mới vào collection variable `foodId`.
+5. Chạy **PATCH - Update food calories** để đổi `calories` thành `999`.
+6. Chạy **DELETE - Delete food** để xóa document vừa tạo.
+7. Chạy GET lại để xác nhận document đã bị xóa.
+
+Collection đặt sẵn `baseUrl = http://localhost:3000`. Nếu muốn thử từng request riêng lẻ, hãy chạy POST trước PATCH hoặc DELETE vì các request sau dùng `foodId` được lưu từ response POST.
 
 ## Cấu trúc thư mục
 
@@ -70,6 +75,8 @@ Các endpoint trả về JSON. API có kiểm tra dữ liệu đầu vào, ID kh
 │   └── food.js
 ├── routes/
 │   └── foodRoutes.js
+├── postman/
+│   └── CRUD_Mongoose_MongoDB_Atlas.postman_collection.json
 ├── .env.example
 ├── .gitignore
 ├── package.json
