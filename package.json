@@ -1,0 +1,27 @@
+{
+  "name": "crud-mongoose-mongodb-atlas",
+  "version": "1.0.0",
+  "description": "REST API CRUD demo using Node.js, Express, Mongoose and MongoDB Atlas",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "mongoose",
+    "mongodb-atlas",
+    "crud",
+    "rest-api"
+  ],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.7",
+    "express": "^5.3.0",
+    "mongoose": "^9.11.2"
+  }
+}
